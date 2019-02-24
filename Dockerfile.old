@@ -1,0 +1,14 @@
+FROM microsoft/dotnet:2.1-sdk AS build
+EXPOSE 80
+
+WORKDIR /src
+COPY todo-server/todo-server.csproj todo-server/
+RUN dotnet restore todo-server/todo-server.csproj
+COPY . .
+WORKDIR /src/todo-server
+RUN dotnet build todo-server.csproj -c Release -o /app
+
+FROM build AS publish
+RUN dotnet publish todo-server.csproj -c Release -o /app
+WORKDIR /app
+ENTRYPOINT ["dotnet", "todo-server.dll"]

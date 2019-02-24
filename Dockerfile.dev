@@ -1,0 +1,5 @@
+FROM microsoft/dotnet:2.1-sdk AS build
+EXPOSE 80
+
+WORKDIR /src
+CMD dotnet restore todo-server/todo-server.csproj && dotnet build todo-server/todo-server.csproj -c Release -o /app && dotnet /app/todo-server.dll
